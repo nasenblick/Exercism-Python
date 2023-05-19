@@ -5,19 +5,50 @@ def annotate(minefield):
 
     for idc, column in enumerate(minefield):
         for idr, row in enumerate(column):
-            if idc < cols -1 and idr < rows -1:
+            count = 0
+            try:
+                if minefield[idc - 1][idr] == '*':
+                    count += 1
+            except IndexError:
+                pass
+
+            try:
+                if minefield[idc - 1][idr - 1] == '*':
+                    count += 1
+            except IndexError:
+                pass
+
+            try:
+                if minefield[idc - 1][idr + 1] == '*':
+                    count += 1
+            except IndexError:
+                pass
+            
+            try:
                 if minefield[idc + 1][idr] == '*':
                     count += 1
+            except IndexError:
+                pass
+            try:
                 if minefield[idc + 1][idr + 1] == '*':
                     count += 1
+            except IndexError: 
+                pass
+        
+            try:
+                if minefield[idc][idr - 1] == '*':
+                    count += 1
+            except IndexError:
+                pass
+            try:
                 if minefield[idc][idr + 1] == '*':
                     count += 1
-                if minefield[idc][idr] != '*':
-                    count = 8
-                    colTmp = list(minefield[idc])
-                    colTmp[0] = str(count)
-                    minefield[idc] = "".join(colTmp)
-            count = 0
+            except IndexError: 
+                pass
+            if minefield[idc][idr] != '*':
+                colTmp = list(minefield[idc])
+                colTmp[idr] = str(count)
+                minefield[idc] = "".join(colTmp)
     
     # #Ecke OL
     # if minefield[0][1] == '*':
