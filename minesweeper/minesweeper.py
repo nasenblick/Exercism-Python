@@ -1,68 +1,27 @@
-def annotate(minefield):
+def annotate(minefield: list[str]) -> list[str]:
 
-    rows = any(len(m) for m in minefield)
+    if not minefield:
+        return minefield
+
+    for row in minefield:
+        if len(row) != len(minefield[0]) or any(c not in " *" for c in row):
+            raise ValueError('The board is invalid with current input.')
+    
+    rows = len(minefield[0])
     cols = len(minefield)
     count = 0
 
-    if not rows:
-        return minefield
-    
-    if not all(len(m) == len(minefield[0]) for m in minefield):
-        raise ValueError("The board is invalid with current input.")
-
-    if any(item != ' ' and item != '*' for row in minefield for item in row):
-        raise ValueError("The board is invalid with current input.")
-
     for idc, column in enumerate(minefield):
         for idr, row in enumerate(column):
-            try:
-                if idc > 0 and minefield[idc - 1][idr] == '*':
-                    count += 1
-            except IndexError:
-                pass
-
-            try:
-                if idc > 0 and idr > 0 and minefield[idc - 1][idr - 1] == '*':
-                    count += 1
-            except IndexError:
-                pass
-
-            try:
-                if idc > 0 and minefield[idc - 1][idr + 1] == '*':
-                    count += 1
-            except IndexError:
-                pass
-            
-            try:
-                if minefield[idc + 1][idr] == '*':
-                    count += 1
-            except IndexError:
-                pass
-                
-            try:
-                if minefield[idc + 1][idr + 1] == '*':
-                    count += 1
-            except IndexError: 
-                pass
-        
-            try:
-                if idr > 0 and minefield[idc][idr - 1] == '*':
-                    count += 1
-            except IndexError:
-                pass
-                
-            try:
-                if minefield[idc][idr + 1] == '*':
-                    count += 1
-            except IndexError: 
-                pass
-                
-            try:
-                if idr > 0 and minefield[idc + 1][idr - 1] == '*':
-                    count += 1
-            except IndexError: 
-                pass
-                
+            POSC = [idc - 1, idc - 1, idc - 1, idc + 1, idc + 1, idc, idc, idc + 1]
+            POSR = [idr, idr - 1, idr + 1, idr, idr + 1, idr - 1, idr + 1, idr - 1]
+            #if 0 < idc < cols - 1 and 0 < idr < rows - 1:
+            print('idc',idc, 'idr', idr)
+            for posc, posr in zip(POSC, POSR):
+                if 0 <= posc < cols and 0 <= posr < rows:
+                    if minefield [posc][posr] == '*':
+                        count += 1
+               
             if minefield[idc][idr] != '*' and count > 0:
                 colTmp = list(minefield[idc])
                 colTmp[idr] = str(count)
@@ -70,4 +29,4 @@ def annotate(minefield):
             count = 0
     return minefield
 
-print(annotate([" ", "*  ", "  "]))
+print(annotate(["   ", " * ", "   "]))
