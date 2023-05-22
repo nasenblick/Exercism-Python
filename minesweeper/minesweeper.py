@@ -33,12 +33,6 @@ def annotate(minefield: list[str]) -> list[str]:
             col = list(minefield[idc])
             col[idr] = str(count)     
             minefield[idc] = ''.join(col) 
-            
-
-
-            
-
-
 
         #     if minefield[idc][idr] != '*' and count:
         #         print('count', count)
