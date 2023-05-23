@@ -11,24 +11,20 @@ def annotate(minefield: list[str]) -> list[str]:
     
     rows = len(minefield[0]) if minefield else 0
     cols = len(minefield)
-    
+    result = []
 
     for idc, column in enumerate(minefield):
-        col = []
+        col = ''
         for idr in range(len(column)):
             count = sum(1 for posc, posr in CELLS if 0 <= idc + posc < cols and 0 <= idr + posr < rows and minefield[idc + posc][idr + posr] == '*')
 
-            col.append(-1) if minefield[idc][idr] == '*' else col.append(count)
-
-        col_tmp = [str(cell) for cell in col]
-        col_str = ''.join(col_tmp)
-        col_str = col_str.replace('0', ' ').replace('-1', '*')
-        minefield[idc] = col_str
-    return minefield
+            col += '*' if minefield[idc][idr] == '*' else ' ' if count == 0 else str(count)
+        result.append(''.join(col))
+    return result
 
 
 
-print(annotate(["***", "   ", "   "]))
+print(annotate(["   ", "   ", "   "]))
 
 
             # if minefield[idc][idr] != '*' and count:
