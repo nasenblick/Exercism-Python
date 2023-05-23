@@ -1,7 +1,5 @@
-CELLS = []
-for posc in (-1, 0, 1):
-    for posr in (-1, 0, 1):
-        CELLS.append((posc, posr))
+CELLS = [(posc, posr) for posc in (-1, 0, 1) for posr in (-1, 0, 1)]
+
 
 def annotate(minefield: list[str]) -> list[str]:
 
@@ -13,42 +11,24 @@ def annotate(minefield: list[str]) -> list[str]:
     
     rows = len(minefield[0]) if minefield else 0
     cols = len(minefield)
+    
 
     for idc, column in enumerate(minefield):
+        col = []
         for idr in range(len(column)):
-            count = 0
-            tmp = []
-            
-            #count += 1 for posc, posr in CELLS if 0 <= idc + posc < cols and 0 <= idr + posr < rows and minefield[idc + posc][idr + posr] == '*'
-            for posc, posr in CELLS:
-                if 0 <= idc + posc < cols and 0 <= idr + posr < rows and minefield[idc + posc][idr + posr] == '*':
-                    count += 1
-            
-            
-            
-            if minefield[idc][idr] != '*' and count:
-                 tmp += str(count)
-         
-                
-            col = list(minefield[idc])
-            col[idr] = str(count)     
-            minefield[idc] = ''.join(col) 
+            count = sum(1 for posc, posr in CELLS if 0 <= idc + posc < cols and 0 <= idr + posr < rows and minefield[idc + posc][idr + posr] == '*')
 
-        #     if minefield[idc][idr] != '*' and count:
-        #         print('count', count)
-        #         print('idc', idc)
-        #         print('tmp', tmp)
-        #         tmp.append(count)
+            col.append(-1) if minefield[idc][idr] == '*' else col.append(count)
 
-        # minefield[idc] = tmp  
-
+        col_tmp = [str(cell) for cell in col]
+        col_str = ''.join(col_tmp)
+        col_str = col_str.replace('0', ' ').replace('-1', '*')
+        minefield[idc] = col_str
     return minefield
 
 
-def format(minefield):
-            pass
 
-print(annotate(["   ", " * ", "   "]))
+print(annotate(["***", "   ", "   "]))
 
 
             # if minefield[idc][idr] != '*' and count:
