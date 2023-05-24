@@ -14,11 +14,21 @@ def annotate(minefield: list[str]) -> list[str]:
     result = []
 
     for idc, column in enumerate(minefield):
-        col = ''
+        col = []
         for idr in range(len(column)):
-            count = sum(1 for posc, posr in CELLS if 0 <= idc + posc < cols and 0 <= idr + posr < rows and minefield[idc + posc][idr + posr] == '*')
+            count = sum(
+                0 <= idc + posc < cols and 0 <= idr + posr < rows 
+                and minefield[idc + posc][idr + posr] == '*' 
+                for posc, posr in CELLS)
+            
+            if minefield[idc][idr] == '*':
+                col.append('*')
+            elif count == 0:
+                col.append(' ')
+            else: 
+                col.append(str(count))
 
-            col += '*' if minefield[idc][idr] == '*' else ' ' if count == 0 else str(count)
+            #col += '*' if minefield[idc][idr] == '*' else ' ' if count == 0 else str(count)
         result.append(''.join(col))
     return result
 
